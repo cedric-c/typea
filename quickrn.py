@@ -4,11 +4,12 @@
  # * (c) Copyright 2018 Cédric Clément.
  # */
 
-import os, sys, xattr, subprocess
-import tempfile
+import os, sys, xattr, subprocess, json
+import tempfile, xml.etree.ElementTree as ElementTree
 from importlib import util
 from os.path import isfile, join
 from os import listdir
+from copy import copy
 xattr_spec = util.find_spec('xattr')
 found_xattr = xattr_spec is not None
 
@@ -27,6 +28,8 @@ COPY_FROM_TO = 2
 # currentDirectory = os.getcwd()
 # print(currentDirectory) # /Users/ced/div/quickRename
 # print(os.curdir) # .
+
+
 
 def write_to_temp_file(content):
     descriptor, path = mkstemp()
@@ -53,11 +56,25 @@ def get_target_files(directory: str = os.getcwd()):
     for file in listdir(path):
         qualifiedFilename = join(path, file)
         if isfile(qualifiedFilename):
-            
-            # Add the fully qualified file to our list of files to return
-            filenames.append(join(path, file))
+            name = join(path, file)
+            _, extension = os.path.splitext(name)
+            if extension == ".pdf":
+                filenames.append(name)
     return filenames
 
+def parseXmlToJson(xml):
+  response = {}
+
+  for child in list(xml):
+    if len(list(child)) > 0:
+      response[child.tag] = parseXmlToJson(child)
+    else:
+      response[child.tag] = child.text or ''
+
+    # one-liner equivalent
+    # response[child.tag] = parseXmlToJson(child) if len(list(child)) > 0 else child.text or ''
+
+  return response
 
 def c1():
     print("case 1")
@@ -69,65 +86,62 @@ def c1():
         tempFiles.append(temporaryFile)
         print("\n")
         print(filename)
-        attrs = xattr.listxattr(filename)
-        # print(attrs[3])
-        # obj = xattr(filename)
-        # print(len(attribute))
-        print(len(attrs))
-        # key = attrs[0]
-        description = "kMDItemDescription"
-        # value = xattr.getxattr(filename,key)
-        # print(xattr.get_all(filename))
-        obj = xattr.xattr(filename)
+
         name = str(temporaryFile.name)+".xml"
         proc = subprocess.check_output(['mdls','-plist', name, filename]).decode()
-        entries = proc.split("=")
-        print(proc)
-        # break
-        # entries = proc.split("\n")
-        properties = {}
-        for record in entries:
-            split = record.split("=")
-            # properties[split[0]] = split[1]
-            # print(split)
-        # print(properties)
-        # print(dir(obj))
-        # print(obj.keys())
-        # print(key)
-        # print(value)
-        # print(entries[3])
-        # print(attribute)
-        # value = "".join(map(chr, attribute))
-        # print(value)
-        # print(value.decode('utf-8'))
-        
-        # print(xattr.listxattr(filename))
-        # break
-        # break
-        # s = str(attribute, 'utf-32')
-        # print(s)
-        # info = os.stat(filename)
-        # print(info.st_file_attributes)
+        # print(proc)
+        # print(temporaryFile.seek(0))
+        # print(temporaryFile.read())
+
+    for file in tempFiles:
+        name = str(file.name) + ".xml"
+        tree = ElementTree.parse(name)
+        parsed = parseXmlToJson(tree.getroot().iter())
+        print(parsed)
+        # print(tree.getroot().getchildren())
+        # for n in tree.iter():
+            # print(dir(n))
+        # print(dir(tree))
+        # jsonTree = json.dumps(tree)
+        # parsed = parseXmlToJson(tree)
+        # print(parsed)
+        print(tree.find("kMDItemCreator"))
+        for child in list(tree.getroot()):
+            children = list(child)
+            # print(child.getchildren())
+            # for c in children:
+                # print(c.text)
+
+    for file in tempFiles:
+        with open(str(file.name)+".xml", 'r') as content:
+            xml = content.read()
+            # parsed = parseXmlToJson(xml)
+            # v = dictify(xml)
+            # print(v)
+
+
     
+    # Close and remove files
     for t in tempFiles:
         t.close()
+        f = str(t.name)+".xml"
+        os.remove(f)
 
 def c2(directoryFrom):
-    print("case 2: "+directoryFrom)
-    files = get_target_files(directoryFrom)
-    print(files)
+    print("NOT IMPLEMENTED")
+    # print("case 2: "+directoryFrom)
+    # files = get_target_files(directoryFrom)
+    # print(files)
 
 def c3(directoryFrom, directoryTo):
-    print("case 3: "+directoryFrom+" - "+directoryTo)
-    files = get_target_files(directoryFrom)
-    print(files)
+    print("NOT IMPLEMENTED")
+    # print("case 3: "+directoryFrom+" - "+directoryTo)
+    # files = get_target_files(directoryFrom)
+    # print(files)
     
 
 if __name__ == "__main__":
     
-    if not found_xattr:
-        print("Cannot start with xattr.")
-        
     parameterCount = len(sys.argv) - 1
     # print("paramcount: "+str(parameterCount))
     
