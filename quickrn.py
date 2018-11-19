@@ -13,6 +13,9 @@ from copy import copy
 xattr_spec = util.find_spec('xattr')
 found_xattr = xattr_spec is not None
 
+LISTABLE = ['array', 'dict', 'plist']
+SCALAR = ['date','string','integer','false','true','real','data']
+
 TEMP_FILE_NAME = ".temp_quickrn"
 
 # No parameter means files in current directory
@@ -62,17 +65,32 @@ def get_target_files(directory: str = os.getcwd()):
                 filenames.append(name)
     return filenames
 
+#
+def countChildren(xml):
+    for child in list(xml):
+        print(len(child))
+        if (len(list(child))>0):
+            print("children")
+        else:
+            print("nochildren")
+        
+
+# https://stackoverflow.com/a/47081240
 def parseXmlToJson(xml):
   response = {}
-
+  # print(xml)
   for child in list(xml):
+    # print("child.tag: "+str(child.tag))
+    # print("child.text: "+str(child.text))
+    # print("child: "+str(child)+"\n")
+    # print("childmembers: "+"\n")
+    # print(child.tail())
+    # recursive mode
     if len(list(child)) > 0:
-      response[child.tag] = parseXmlToJson(child)
+        response[child.text] = parseXmlToJson(child)
     else:
-      response[child.tag] = child.text or ''
-
-    # one-liner equivalent
-    # response[child.tag] = parseXmlToJson(child) if len(list(child)) > 0 else child.text or ''
+        # child.text should be the previous or next
+        response[child.tag] = child.text or ''
 
   return response
 
@@ -96,8 +114,18 @@ def c1():
     for file in tempFiles:
         name = str(file.name) + ".xml"
         tree = ElementTree.parse(name)
-        parsed = parseXmlToJson(tree.getroot().iter())
-        print(parsed)
+        root = ElementTree.parse(name)
+        parsed = parseXmlToJson(tree.iter())
+        
+        for v in root.iter('kMDItemAuthors'):
+            print("hi")
+            print(v.attrib)
+        
+        # print(tree)
+        # print(dir(tree.getroot()))
+        # parsed = parseXmlToJson(tree.iter())
+        # parsed = parseXmlToJson(tree.getroot())
+        # print(parsed)
         # print(tree.getroot().getchildren())
         # for n in tree.iter():
             # print(dir(n))
@@ -105,7 +133,7 @@ def c1():
         # jsonTree = json.dumps(tree)
         # parsed = parseXmlToJson(tree)
         # print(parsed)
-        print(tree.find("kMDItemCreator"))
+        # print(tree.find("kMDItemCreator"))
         for child in list(tree.getroot()):
             children = list(child)
             # print(child.getchildren())
@@ -115,7 +143,10 @@ def c1():
     for file in tempFiles:
         with open(str(file.name)+".xml", 'r') as content:
             xml = content.read()
+            print(xml)
+
             # parsed = parseXmlToJson(xml)
+            # print(parsed)
             # v = dictify(xml)
             # print(v)
 
