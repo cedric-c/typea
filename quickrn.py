@@ -4,7 +4,7 @@
  # * (c) Copyright 2018 Cédric Clément.
  # */
 
-import os, sys, xattr, subprocess, json
+import os, sys, xattr, subprocess, shutil
 import tempfile, xml.etree.ElementTree as ElementTree
 from importlib import util
 from os.path import isfile, join
@@ -22,6 +22,8 @@ KEY_JOURNAL = 'kMDItemDescription'
 KEY_FILENAME = 'kMDItemDisplayName'
 KEY_PUBLISHER = 'kMDItemCreator'
 
+OUTPUT_DIR = 'out'
+
 # No parameter means files in current directory
 RENAME_IN_CURRENT  = 0
 
@@ -32,7 +34,7 @@ COPY_FROM    = 1
 COPY_FROM_TO = 2
 
 # grab current directory
-# currentDirectory = os.getcwd()
+currentDirectory = os.getcwd()
 # print(currentDirectory) # /Users/ced/div/quickRename
 # print(os.curdir) # .
 
@@ -80,6 +82,7 @@ def c1():
         name = str(temporaryFile.name)+".xml"
         proc = subprocess.check_output(['mdls','-plist', name, filename]).decode()
 
+    newNames = []
     for file in tempFiles:
         name = str(file.name) + ".xml"
         tree = ElementTree.parse(name)
@@ -102,11 +105,32 @@ def c1():
                     vals[currentNode.text] = nextNode.text
                     
         
-        print(vals)
-        print(vals[KEY_AUTHOR])
-        print(vals[KEY_TITLE])
-
+        # print(vals)
+        auth_ = vals.get(KEY_AUTHOR)
+        title = vals.get(KEY_TITLE)
+        pub = vals.get(KEY_PUBLISHER)
+        journal = vals.get(KEY_JOURNAL)
+        
+        outputPath = join(currentDirectory, OUTPUT_DIR)
+        if not os.path.exists(outputPath):
+            os.makedirs(outputPath)
+        
+        if type(auth_) is list:
+            auth = auth_[0]
+        else:
+            auth = 'NA'
+            
+        
+        newName = join(OUTPUT_DIR,pub+'_'+title+'_'+auth+'.pdf')
+        newNames.append(newName)
+        
     
+    for (index, file) in enumerate(files):
+        try:
+            shutil.copy(file, newNames[index])
+        except:
+            print(newNames[index]+" alreadt exists... skipping\n")
+        
     # Close and remove files
     for t in tempFiles:
         t.close()
