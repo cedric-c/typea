@@ -16,7 +16,11 @@ found_xattr = xattr_spec is not None
 LISTABLE = ['array', 'dict', 'plist']
 SCALAR = ['date','string','integer','false','true','real','data']
 
-TEMP_FILE_NAME = ".temp_quickrn"
+KEY_TITLE = 'kMDItemTitle'
+KEY_AUTHOR = 'kMDItemAuthors'
+KEY_JOURNAL = 'kMDItemDescription'
+KEY_FILENAME = 'kMDItemDisplayName'
+KEY_PUBLISHER = 'kMDItemCreator'
 
 # No parameter means files in current directory
 RENAME_IN_CURRENT  = 0
@@ -32,14 +36,6 @@ COPY_FROM_TO = 2
 # print(currentDirectory) # /Users/ced/div/quickRename
 # print(os.curdir) # .
 
-
-
-def write_to_temp_file(content):
-    descriptor, path = mkstemp()
-    with open(path, 'w') as file:
-        file.write(content)
-    os.close(fd)
-    return path
 
 def get_target_files(directory: str = os.getcwd()):
     ''' Returns a list of targets on which to perform renaming operations
@@ -66,33 +62,9 @@ def get_target_files(directory: str = os.getcwd()):
     return filenames
 
 #
-def countChildren(xml):
-    for child in list(xml):
-        print(len(child))
-        if (len(list(child))>0):
-            print("children")
-        else:
-            print("nochildren")
-        
+from collections import defaultdict
 
-# https://stackoverflow.com/a/47081240
-def parseXmlToJson(xml):
-  response = {}
-  # print(xml)
-  for child in list(xml):
-    # print("child.tag: "+str(child.tag))
-    # print("child.text: "+str(child.text))
-    # print("child: "+str(child)+"\n")
-    # print("childmembers: "+"\n")
-    # print(child.tail())
-    # recursive mode
-    if len(list(child)) > 0:
-        response[child.text] = parseXmlToJson(child)
-    else:
-        # child.text should be the previous or next
-        response[child.tag] = child.text or ''
 
-  return response
 
 def c1():
     print("case 1")
@@ -107,49 +79,32 @@ def c1():
 
         name = str(temporaryFile.name)+".xml"
         proc = subprocess.check_output(['mdls','-plist', name, filename]).decode()
-        # print(proc)
-        # print(temporaryFile.seek(0))
-        # print(temporaryFile.read())
 
     for file in tempFiles:
         name = str(file.name) + ".xml"
         tree = ElementTree.parse(name)
-        root = ElementTree.parse(name)
-        parsed = parseXmlToJson(tree.iter())
+
+        nodes = list(tree.getroot()[0])
+        vals = {}
+        for (index, child) in enumerate(nodes[:-1]):
+            currentNode, nextNode = child, nodes[index + 1]
+
+            if (currentNode.tag == 'key'):
+                # 
+                if(nextNode.tag in LISTABLE):
+                    # print(list(nextNode))
+                    v = []
+                    for n in list(nextNode):
+                        v.append(n.text)
+                    # print(list(nextNode.text))
+                    vals[currentNode.text] = v
+                else:
+                    vals[currentNode.text] = nextNode.text
+                    
         
-        for v in root.iter('kMDItemAuthors'):
-            print("hi")
-            print(v.attrib)
-        
-        # print(tree)
-        # print(dir(tree.getroot()))
-        # parsed = parseXmlToJson(tree.iter())
-        # parsed = parseXmlToJson(tree.getroot())
-        # print(parsed)
-        # print(tree.getroot().getchildren())
-        # for n in tree.iter():
-            # print(dir(n))
-        # print(dir(tree))
-        # jsonTree = json.dumps(tree)
-        # parsed = parseXmlToJson(tree)
-        # print(parsed)
-        # print(tree.find("kMDItemCreator"))
-        for child in list(tree.getroot()):
-            children = list(child)
-            # print(child.getchildren())
-            # for c in children:
-                # print(c.text)
-
-    for file in tempFiles:
-        with open(str(file.name)+".xml", 'r') as content:
-            xml = content.read()
-            print(xml)
-
-            # parsed = parseXmlToJson(xml)
-            # print(parsed)
-            # v = dictify(xml)
-            # print(v)
-
+        print(vals)
+        print(vals[KEY_AUTHOR])
+        print(vals[KEY_TITLE])
 
     
     # Close and remove files
