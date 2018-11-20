@@ -13,7 +13,7 @@ Soon...
 3. PDF parsing for articles which don't have the needed xattrs.
 4. GUI?
 5. Tutorial and instructions
-
+6. Support for other environments
 
 If you like this I expect to be referenced in your PhD dissertation! :-)
 
