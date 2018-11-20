@@ -70,15 +70,15 @@ from collections import defaultdict
 
 
 def c1():
-    print("case 1")
+    print("Processing list: ")
     files = get_target_files()
     print(files)
     tempFiles = []
     for filename in files:
         temporaryFile = tempfile.TemporaryFile();
         tempFiles.append(temporaryFile)
-        print("\n")
-        print(filename)
+        # print("\n")
+        # print(filename)
 
         name = str(temporaryFile.name)+".xml"
         proc = subprocess.check_output(['mdls','-plist', name, filename]).decode()
@@ -117,12 +117,14 @@ def c1():
             os.makedirs(outputPath)
         
         if type(auth_) is list:
-            auth = auth_[0]
+            auth = auth_[0].split(",")[0]
+            # print()
+            # print("AUTHOR: "+str(len(auth)))
         else:
             auth = 'NA'
             
         
-        newName = join(OUTPUT_DIR,pub+'_'+title+'_'+auth+'.pdf')
+        newName = join(OUTPUT_DIR,auth+'_'+title+'.pdf')
         newNames.append(newName)
         
     
