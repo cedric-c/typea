@@ -1,6 +1,6 @@
 # typea
 
-TypeA is a file renaming tool used by Type-A personalities to rename PDFs, typically research articles. These research articles often have long names with little meaning. TypeA reads extended file attributes (xattrs) and copies the file to an `out` directory using the format `author_title.pdf`.
+TypeA is a file renaming tool used by [Type-A personalities][1] to rename PDFs, typically research articles. These research articles often have long names with little meaning. TypeA reads extended file attributes (xattrs) and copies the file to an `out` directory using the format `author_title.pdf`.
 
 ## For Geeks
 
@@ -25,4 +25,4 @@ Soon...
 
 If you like this I expect to be referenced in your PhD dissertation! :-)
 
-
+[1]: https://en.wikipedia.org/wiki/Type_A_and_Type_B_personality_theory
