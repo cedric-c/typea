@@ -122,7 +122,7 @@ def c1():
             auth = 'NA'
             
         
-        newName = join(OUTPUT_DIR,auth+'_'+title+'.pdf')
+        newName = join(OUTPUT_DIR,str(auth)+'_'+str(title)+'.pdf')
         newNames.append(newName)
         
     
