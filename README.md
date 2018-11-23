@@ -22,6 +22,7 @@ Soon...
 4. GUI.
 5. Tutorial and instructions.
 6. Support for other environments.
+7. Support for custom paramter placement.
 
 If you like this I expect to be referenced in your PhD dissertation! :-)
 

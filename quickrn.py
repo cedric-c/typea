@@ -5,14 +5,12 @@
  # * (c) Copyright 2018 Cédric Clément.
  # */
 
-import os, sys, xattr, subprocess, shutil
+import os, sys, subprocess, shutil
 import tempfile, xml.etree.ElementTree as ElementTree
 from importlib import util
 from os.path import isfile, join
 from os import listdir
 from copy import copy
-xattr_spec = util.find_spec('xattr')
-found_xattr = xattr_spec is not None
 
 LISTABLE = ['array', 'dict', 'plist']
 SCALAR = ['date','string','integer','false','true','real','data']
