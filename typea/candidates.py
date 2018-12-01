@@ -74,8 +74,7 @@ class Candidates:
         for filename in self.list(directory):
             pdf_object = open(filename, 'rb')
             reader = PyPDF2.PdfFileReader(pdf_object)
-            meta[filename] = reader.documentInfo
-            # meta.append(reader.documentInfo)
+            meta[filename] = reader.getDocumentInfo()
         return meta
 
 

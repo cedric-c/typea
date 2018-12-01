@@ -37,3 +37,9 @@ from typea.candidates import Candidates
 c = Candidates()
 print(c.list())
 print(c.meta())
+
+# for filename in c.list():
+
+for key, value in c.meta().items():
+    print(key, value)
+    
