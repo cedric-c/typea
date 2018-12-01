@@ -43,8 +43,14 @@ class Candidates:
         """(Candidates, str) -> NoneType"""
         self.directory = directory
     
-    def list(self, directory = os.getcwd()):
-        """(Candidates, str) -> dictionary of str"""
+    def list(self, directory = None):
+        """(Candidates, str) -> dictionary of str
+        Lists the files in the provided directory which have a pdf extension.        
+        """
+        
+        if(directory == None):
+            directory = self.directory
+        
         filenames = []
         path = os.path.expanduser(directory)
         for file in listdir(path):
@@ -56,10 +62,16 @@ class Candidates:
                     filenames.append(name)
         return filenames
     
-    def meta(self):
-        """(Candidates) -> dictionary of str"""
+    def meta(self, directory = None):
+        """(Candidates) -> dictionary of str
+        Returns the files and their metadata as a dictionary indexed on the filenames of the files.
+        """
+        
+        if(directory == None):
+            directory = self.directory
+        
         meta = {}
-        for filename in self.list(self.directory):
+        for filename in self.list(directory):
             pdf_object = open(filename, 'rb')
             reader = PyPDF2.PdfFileReader(pdf_object)
             meta[filename] = reader.documentInfo
