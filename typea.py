@@ -13,3 +13,4 @@ from typea.candidates import Candidates
 
 c = Candidates()
 print(c.list())
+print(c.meta())

@@ -8,6 +8,7 @@
 import os
 from os import listdir
 from os.path import isfile, join
+import PyPDF2
 
 TARGET_EXTENSION = "pdf"
 
@@ -30,10 +31,23 @@ class Candidates:
                 if extension == "." + TARGET_EXTENSION:
                     filenames.append(name)
         return filenames
+    
+    def meta(self, directory = os.getcwd()):
+        """(Candidates, str) -> dictionary of str"""
+        path = os.path.expanduser(directory)
+        meta = {}
+        for filename in self.list(directory):
+            pdf_object = open(filename, 'rb')
+            reader = PyPDF2.PdfFileReader(pdf_object)
+            meta[filename] = reader.documentInfo
+            # meta.append(reader.documentInfo)
+        return meta
 
 
 if __name__ == "__main__":
     c = Candidates()
     # print(os.getcwd())
     test = c.list(os.getcwd())
-    print(test)
+    
+    meta = c.meta()
+    print(meta)
