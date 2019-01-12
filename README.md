@@ -17,7 +17,7 @@ TypeA is a file renaming tool used by [Type-A personalities][1] to rename PDFs, 
 
 
 <center>
-<img width="250" src="screenshots/sample2.png" alt="Description">
+<img width="500" src="screenshots/sample2.png" alt="Description">
 </center>
 
 <!-- ![sample1](screenshots/sample1.png) -->
