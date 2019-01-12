@@ -4,35 +4,41 @@ TypeA is a file renaming tool used by [Type-A personalities][1] to rename PDFs, 
 
 ## Instructions
 
-**Make sure you have downloaded Python.**
+### Installation
+
+1. Download this repository.
+2. Open a terminal session.
+3. Navigate to the new repository.
+4. Type `./setup` to install.
+
+### Executing
 
 1. Download this repository.
 2. Open a terminal session.
 3. Navigate to the new repository
-4. Move the PDFs you wish to rename
-5. Type `./typea.py`
-6. The PDFs will be in a folder called `renamed_articles`
+4. Move the PDFs you wish to rename into the project folder (inside the toplevel `typea`).
+5. Type `./typea.py` to rename.
+6. The PDFs will be in a folder called `renamed_articles`.
 
 ## Screenshots
-
 
 <p align="center">
     <img align="center" width="500" src="screenshots/sample2.png" alt="Description">
 </p>
 
-<!-- ![sample1](screenshots/sample1.png) -->
-
 ## Todo
 
 1. Support for multiple parameters.
-2. Compiled version, placed in bin for easier calls
-3. PDF parsing for articles which don't have the needed xattrs.
-4. GUI.
-5. Tutorial and instructions.
-6. Support for other environments.
-7. Support for custom paramter placement.
-8. CLI parameter for removing old files
-9. 
-
+    1. Target input directories
+    2. Target output directories
+    3. Specify delimeter
+    4. Specify naming pattern
+    5. Remove old files
+2. Convert project to Golang
+3. Compiled version, placed in bin for easier calls
+4. PDF parsing for articles which don't have the needed xattrs.
+5. GUI.
+6. Better tutorial/instructions.
+7. Better title/author discovery.
 
 [1]: https://en.wikipedia.org/wiki/Type_A_and_Type_B_personality_theory

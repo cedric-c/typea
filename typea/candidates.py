@@ -114,23 +114,12 @@ class Candidates:
         if(destination_dir == None):
             destination_dir = OUTPUT_DIRECTORY
         
-        # if(filepath not in self.target_pdfs):
-            # return None
-        
         if(not os.path.exists(destination_dir)):
             os.makedirs(destination_dir)
-        # try:
-        # print(filepath)
+
         new_dir = join(self.directory, destination_dir)
-        
-        # if(not self.readable(filepath)):
-            # return None
-        
-        # get name
-        # new_name
         new_path = new_name + TARGET_EXTENSION if add_ext else new_name
         shutil.copy(filepath, join(new_dir, new_path))
-        # search for key
     
     def name(self, filepath):
         """(Candidates) -> name of target file str
