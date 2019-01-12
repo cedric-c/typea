@@ -33,12 +33,7 @@ import os, shutil, ntpath
 from typea.candidates import Candidates
 from copy import copy
 
-# c = Candidates()
-# print(dir(typea))
-
 articles = Candidates()
-
-
 
 for file in articles.pdfs:
     authors, title = articles.name(file)
@@ -55,6 +50,6 @@ for file in articles.pdfs:
     
     firstAuthor = authors.split(" ")[0]
     
-    articles.clone(filepath=file, new_name=firstAuthor + "--" + title)
+    articles.clone(filepath=file, new_name=firstAuthor + " - " + title)
     
     
