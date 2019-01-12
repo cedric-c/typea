@@ -43,13 +43,13 @@ for file in articles.pdfs:
     authors, title = articles.name(file)
     original_name = ntpath.basename(file)
     
-    if(authors == title == None or title == None):
+    if(authors == title == None or title == None or authors == title == '' or title == ''):
         print("Skipping file (missing attributes):", file)
         skipped += 1
         articles.clone(filepath=file, new_name=original_name, add_ext=False)
         continue
     
-    if(authors == None):
+    if(authors == None or authors == '' ):
         renamed += 1
         articles.clone(filepath=file, new_name=title)
         continue
