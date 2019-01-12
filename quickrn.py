@@ -10,7 +10,7 @@ import tempfile, xml.etree.ElementTree as ElementTree
 from importlib import util
 from os.path import isfile, join
 from os import listdir
-from copy import copy
+# from copy import copy
 
 LISTABLE = ['array', 'dict', 'plist']
 SCALAR = ['date','string','integer','false','true','real','data']

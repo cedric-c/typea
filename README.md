@@ -1,10 +1,6 @@
 # typea
 
-TypeA is a file renaming tool used by [Type-A personalities][1] to rename PDFs, typically research articles. These research articles often have long names with little meaning. TypeA reads extended file attributes (xattrs) and copies the file to an `out` directory using the format `author - title.pdf`.
-
-## For Geeks
-
-TypeA uses `mdls` to retrieve the extended file attributes. As such, it is not currently available on Windows. I plan to support Windows in future releases (as well as a more robust solution).
+TypeA is a file renaming tool used by [Type-A personalities][1] to rename PDFs, typically research articles. These research articles often have long names with little meaning. TypeA reads extended file attributes (xattrs) and copies the file to a new directory using the format `author - title.pdf`.
 
 ## Instructions
 
@@ -19,7 +15,12 @@ TypeA uses `mdls` to retrieve the extended file attributes. As such, it is not c
 
 ## Screenshots
 
-![sample1](screenshots/sample1.png)
+
+<center>
+<img width="250" src="screenshots/sample2.png" alt="Description">
+</center>
+
+<!-- ![sample1](screenshots/sample1.png) -->
 
 ## Todo
 
