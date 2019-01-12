@@ -29,17 +29,32 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+import os, shutil, ntpath
 from typea.candidates import Candidates
+from copy import copy
 
 # c = Candidates()
 # print(dir(typea))
 
-c = Candidates()
-print(c.list())
-print(c.meta())
+articles = Candidates()
 
-# for filename in c.list():
 
-for key, value in c.meta().items():
-    print(key, value)
+
+for file in articles.pdfs:
+    authors, title = articles.name(file)
+    # print(file, "\t" ,authors, title)
+    original_name = ntpath.basename(file)
+    
+    if(authors == title == None or title == None):
+        articles.clone(filepath=file, new_name=original_name, add_ext=False)
+        continue
+    
+    if(authors == None):
+        articles.clone(filepath=file, new_name=title)
+        continue
+    
+    firstAuthor = authors.split(" ")[0]
+    
+    articles.clone(filepath=file, new_name=firstAuthor + "--" + title)
+    
     
