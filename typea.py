@@ -54,7 +54,7 @@ for file in articles.pdfs:
         articles.clone(filepath=file, new_name=title)
         continue
     
-    firstAuthor = authors.split(" ")[0]
+    firstAuthor = authors.split(" ")[1]
     
     articles.clone(filepath=file, new_name=firstAuthor + " - " + title)
     renamed += 1

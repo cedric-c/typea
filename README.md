@@ -40,5 +40,8 @@ TypeA is a file renaming tool used by [Type-A personalities][1] to rename PDFs, 
 5. GUI.
 6. Better tutorial/instructions.
 7. Better title/author discovery.
+8. Support for publishers which don't add metadata to PDFs:
+    1. arXiv (api)
+
 
 [1]: https://en.wikipedia.org/wiki/Type_A_and_Type_B_personality_theory
