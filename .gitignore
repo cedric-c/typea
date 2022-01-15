@@ -1,2 +1,4 @@
-__pycache__/
-samples/
+.idea/
+.venv/
+.vscode/
+*.pdf
