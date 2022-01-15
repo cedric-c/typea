@@ -1,4 +1,3 @@
-#!/usr/local/bin/python3.7
 # -*- coding: utf-8 -*-
 
 import os
@@ -29,14 +28,14 @@ class Candidates:
         """(Candidates, str) -> NoneType"""
         self.directory = directory
         self.pdfs = self.list(self.directory)
-        self.infos = self.meta(self.directory)
+        self.infos, self.contents = self.meta(self.directory)
 
     def list(self, directory=None):
         """(Candidates, str) -> dictionary of str
         Lists the files in the provided directory which have a pdf extension.        
         """
 
-        if (directory == None):
+        if directory is None:
             directory = self.directory
 
         filenames = []
@@ -57,17 +56,20 @@ class Candidates:
         Returns the files and their metadata as a dictionary indexed on the filenames of the files.
         """
 
-        if (directory == None):
+        if directory is None:
             directory = self.directory
 
         meta = {}
+        pages = {}
         for filename in self.pdfs:
-            if (self.readable(filename)):
+            if self.readable(filename):
                 pdf_object = open(filename, 'rb')
                 reader = PyPDF2.PdfFileReader(pdf_object)
                 meta[filename] = reader.getDocumentInfo()
-
-        return meta
+                pages[filename] = []
+                for page in reader.pages:
+                    pages[filename].append(page.extractText())
+        return meta, pages
 
     def readable(self, filename):
         """(Candidates) -> str
@@ -88,17 +90,17 @@ class Candidates:
         Creates the folder starting from the path first specified when creating the object.
         """
 
-        if (destination_dir == None):
+        if destination_dir is None:
             destination_dir = OUTPUT_DIRECTORY
 
-        if (not os.path.exists(destination_dir)):
+        if not os.path.exists(destination_dir):
             os.makedirs(destination_dir)
 
         new_dir = join(self.directory, destination_dir)
         new_path = new_name + TARGET_EXTENSION if add_ext else new_name
         shutil.copy(filepath, join(new_dir, new_path))
 
-    def name(self, filepath):
+    def name(self, filepath) -> (str, str, str):
         """(Candidates) -> name of target file str
         Returns the name of a file by searching through the metadata.
         """
@@ -106,6 +108,9 @@ class Candidates:
         title = self.__getTitle(filepath)
         date = self.__get(ARTICLE_DATE, filepath)
         return author, title, date
+
+    def content(self, filepath) -> list:
+        return self.__getContents(filepath)
 
     def __getAuthor(self, filepath):
         """This is a WIP.
@@ -116,12 +121,17 @@ class Candidates:
         except:
             return None
 
+    def __getContents(self, filepath):
+        try:
+            return self.contents[filepath]
+        except:
+            return None
+
     def __getTitle(self, filepath):
         """This is a WIP
         """
         try:
             data = self.infos[filepath]
-            # print(data,"hello")
             return data[ARTICLE_TITLE]
         except:
             return None

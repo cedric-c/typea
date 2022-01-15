@@ -1,6 +1,8 @@
 # typea
 
-TypeA is a file renaming tool used by [Type-A personalities][1] to rename PDFs, typically research articles. These research articles often have long names with little meaning. TypeA reads extended file attributes (xattrs) and copies the file to a new directory using the format `author - title.pdf`.
+TypeA is a file renaming tool used by [Type-A personalities][1] to rename PDFs, typically research articles. These
+research articles often have long names with little meaning. TypeA reads extended file attributes (xattrs) and copies
+the file to a new directory using the format `author - title.pdf`.
 
 ## Instructions
 
@@ -28,6 +30,8 @@ TypeA is a file renaming tool used by [Type-A personalities][1] to rename PDFs, 
 
 ## Todo
 
+### Features
+
 1. Support for multiple parameters.
     1. Target input directories
     2. Target output directories
@@ -37,11 +41,18 @@ TypeA is a file renaming tool used by [Type-A personalities][1] to rename PDFs, 
 2. Convert project to Golang
 3. Compiled version, placed in bin for easier calls
 4. PDF parsing for articles which don't have the needed xattrs.
-5. GUI.
 6. Better tutorial/instructions.
 7. Better title/author discovery.
 8. Support for publishers which don't add metadata to PDFs:
     1. arXiv (api)
 
+- [ ] 
+
+### Build
+
+- [ ] .venv ?
+- [ ] requirements
 
 [1]: https://en.wikipedia.org/wiki/Type_A_and_Type_B_personality_theory
+
+
